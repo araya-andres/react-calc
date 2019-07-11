@@ -55,10 +55,12 @@ class App extends Component {
 
   handleNumber = key => {
     const n = Number.parseInt(key)
-    if (this.state.decimalPosition === 0) {
-      this.handleInteger(n)
-    } else {
-      this.handleDecimal(n)
+    return () => {
+      if (this.state.decimalPosition === 0) {
+        this.handleInteger(n)
+      } else {
+        this.handleDecimal(n)
+      }
     }
   }
 
@@ -69,12 +71,13 @@ class App extends Component {
       'x': x => y => x * y,
       '/': x => y => x / y,
     }
-    const value = this.state.op(this.state.currentValue)
-    this.setState({
-      currentValue: 0,
-      op: ops[key](value),
-      decimalPosition: 0,
-    })
+    return () => {
+      this.setState({
+        currentValue: 0,
+        op: ops[key](this.state.op(this.state.currentValue)),
+        decimalPosition: 0,
+      })
+    }
   }
 
   handleDot = () => {
@@ -93,9 +96,9 @@ class App extends Component {
 
   getHandler = key => {
     if (/\d/.test(key)) {
-      return this.handleNumber
+      return this.handleNumber(key)
     } else if (/[+\-x/]/.test(key)) {
-      return this.handleOperator
+      return this.handleOperator(key)
     } else if (key === '=') {
       return this.handleEq
     } else if (key === '.' ) {
