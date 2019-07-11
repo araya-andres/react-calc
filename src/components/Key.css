@@ -1,7 +1,8 @@
 .key {
-  border-bottom: 1px solid gray;
+  background-color: gainsboro;
+  border-bottom: 1px solid dimgray;
   border-left: 1px solid white;
-  border-right: 1px solid grey;
+  border-right: 1px solid lightgray;
   border-top: 1px solid white;
   cursor: default;
   height: 50px;
