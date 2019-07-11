@@ -5,7 +5,7 @@ import './Keyboard.css'
 
 const keyboard = ({keys, click}) =>
   <div className='keyboard'>
-    {keys.map((keys, i) => <Row key={i} keys={keys} click={click}/>)}
+    {keys.map((keys, i) => <Row key={i} keys={keys}/>)}
   </div>
 
 export default keyboard

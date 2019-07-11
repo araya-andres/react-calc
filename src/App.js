@@ -93,12 +93,13 @@ class App extends Component {
     ].map(row => row.map(label => ({
       label,
       id: getId(label),
+      click: this.handleKey,
     })))
 
     return (
       <div className="App">
         <Screen value={this.state.currentValue}/>
-        <Keyboard keys={keys} click={this.handleKey}/>
+        <Keyboard keys={keys} />
       </div>
     )
   }
