@@ -1,0 +1,33 @@
+.key {
+  border-right: 1px solid grey;
+  border-bottom: 1px solid grey;
+  width: 40px;
+  height: 40px;
+  cursor: default;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 40px;
+}
+
+#key_clear {
+  width: 120px;
+  background-color: darkred;
+  color: white;
+}
+
+#key_0 {
+  width: 80px;
+}
+
+#key_equal {
+  width: 80px;
+}
+
+#key_division,
+#key_multiplication,
+#key_substraction,
+#key_addition,
+#key_equal {
+  background-color: orange;
+  color: white;
+}
