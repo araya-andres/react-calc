@@ -18,11 +18,13 @@ const getId = key => {
 }
 
 class App extends Component {
-  state = {
+  initialState = {
     currentValue: 0,
     op: x => x,
     decimalPosition: 0,
   }
+
+  state = this.initialState
 
   constructor(props) {
     super(props)
@@ -87,11 +89,7 @@ class App extends Component {
     decimalPosition: 0,
   })
 
-  handleClear = () => this.setState({
-    currentValue: 0,
-    op: x => x,
-    decimalPosition: 0,
-  })
+  handleClear = () => this.setState(this.initialState)
 
   getHandler = key => {
     if (/\d/.test(key)) {
