@@ -4,17 +4,16 @@ import Keyboard from './components/Keyboard'
 import Screen from './components/Screen'
 
 const getId = key => {
-  if (/[+\-x/=]/.test(key)) {
-    const desc = {
-      '+': 'addition',
-      '-': 'substraction',
-      'x': 'multiplication',
-      '/': 'division',
-      '=': 'equal',
-    }
-    return `key_${desc[key]}`
+  const desc = {
+    '+': 'addition',
+    '-': 'substraction',
+    'x': 'multiplication',
+    '/': 'division',
+    '=': 'equal',
   }
-  return `key_${key}`
+  return key in desc
+    ? `key_${desc[key]}`
+    : `key_${key}`
 }
 
 class App extends Component {
