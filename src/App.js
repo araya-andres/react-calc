@@ -11,9 +11,7 @@ const getId = key => {
     '/': 'division',
     '=': 'equal',
   }
-  return key in desc
-    ? `key_${desc[key]}`
-    : `key_${key}`
+  return `key_${key in desc ? desc[key] : key}`
 }
 
 class App extends Component {

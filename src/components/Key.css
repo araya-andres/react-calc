@@ -1,22 +1,24 @@
 .key {
+  border-bottom: 1px solid gray;
+  border-left: 1px solid white;
   border-right: 1px solid grey;
-  border-bottom: 1px solid grey;
-  width: 40px;
-  height: 40px;
+  border-top: 1px solid white;
   cursor: default;
+  height: 50px;
+  line-height: 50px;
   text-align: center;
   vertical-align: middle;
-  line-height: 40px;
+  width: 50px;
 }
 
 #key_clear {
-  width: 120px;
   background-color: darkred;
   color: white;
+  width: 154px;
 }
 
 #key_0 {
-  width: 80px;
+  width: 102px;
 }
 
 #key_division,
