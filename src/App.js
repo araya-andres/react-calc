@@ -24,16 +24,25 @@ class App extends Component {
     decimalPosition: 0,
   }
 
-  handleInteger = key => {
-    const currentValue = this.state.currentValue * 10 + Number.parseInt(key)
+  handleInteger = n => {
+    const currentValue = this.state.currentValue * 10 + n
     this.setState({ currentValue })
   }
 
-  handleDecimal = key => {
+  handleDecimal = n => {
     let { currentValue, decimalPosition } = this.state
-    currentValue += decimalPosition * Number.parseInt(key)
+    currentValue += decimalPosition * n
     decimalPosition *= 0.1
     this.setState({ currentValue, decimalPosition })
+  }
+
+  handleNumber = key => {
+    const n = Number.parseInt(key)
+    if (this.state.decimalPosition === 0) {
+      this.handleInteger(n)
+    } else {
+      this.handleDecimal(n)
+    }
   }
 
   handleOperator = key => {
@@ -51,7 +60,11 @@ class App extends Component {
     })
   }
 
-  handleDot = () => this.setState({ decimalPosition: .1 })
+  handleDot = () => {
+    if (this.state.decimalPosition === 0) {
+      this.setState({ decimalPosition: .1 })
+    }
+  }
 
   handleEq = () => this.setState({
     currentValue: this.state.op(this.state.currentValue),
@@ -67,16 +80,12 @@ class App extends Component {
 
   handleKey = key => {
     if (/\d/.test(key)) {
-      if (this.state.decimalPosition === 0) {
-        this.handleInteger(key)
-      } else {
-        this.handleDecimal(key)
-      }
+      this.handleNumber(key)
     } else if (/[+\-x/]/.test(key)) {
       this.handleOperator(key)
     } else if (key === '=') {
       this.handleEq()
-    } else if (key === '.' && this.state.decimalPosition === 0) {
+    } else if (key === '.' ) {
       this.handleDot()
     } else if (key === 'clear') {
       this.handleClear()
