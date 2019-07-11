@@ -24,6 +24,21 @@ class App extends Component {
     decimalPosition: 0,
   }
 
+  constructor(props) {
+    super(props)
+    this.keys = [
+      [ 'clear', '/' ],
+      [ '7', '8', '9', 'x' ],
+      [ '4', '5', '6', '-' ],
+      [ '1', '2', '3', '+' ],
+      [ '0', '.', '=' ],
+    ].map(row => row.map(label => ({
+      label,
+      id: getId(label),
+      click: this.getHandler(label),
+    })))
+  }
+
   handleInteger = n => {
     const currentValue = this.state.currentValue * 10 + n
     this.setState({ currentValue })
@@ -78,37 +93,25 @@ class App extends Component {
     decimalPosition: 0,
   })
 
-  handleKey = key => {
+  getHandler = key => {
     if (/\d/.test(key)) {
-      this.handleNumber(key)
+      return this.handleNumber
     } else if (/[+\-x/]/.test(key)) {
-      this.handleOperator(key)
+      return this.handleOperator
     } else if (key === '=') {
-      this.handleEq()
+      return this.handleEq
     } else if (key === '.' ) {
-      this.handleDot()
+      return this.handleDot
     } else if (key === 'clear') {
-      this.handleClear()
+      return this.handleClear
     }
   }
 
   render () {
-    const keys = [
-      [ 'clear', '/' ],
-      [ '7', '8', '9', 'x' ],
-      [ '4', '5', '6', '-' ],
-      [ '1', '2', '3', '+' ],
-      [ '0', '.', '=' ],
-    ].map(row => row.map(label => ({
-      label,
-      id: getId(label),
-      click: this.handleKey,
-    })))
-
     return (
       <div className="App">
         <Screen value={this.state.currentValue}/>
-        <Keyboard keys={keys} />
+        <Keyboard keys={this.keys}/>
       </div>
     )
   }
