@@ -20,13 +20,13 @@ const getId = key => {
 class App extends Component {
   state = {
     currentValue: 0,
-    op: null,
+    op: x => x,
   }
 
   handleKey = key => {
     const { currentValue, op } = this.state
     let newValue = 0
-    let newOp = null
+    let newOp = x => x
     if (/\d/.test(key)) {
       newValue = currentValue * 10 + Number.parseInt(key)
       newOp = op
@@ -37,14 +37,10 @@ class App extends Component {
         'x': a => b => a * b,
         '/': a => b => a / b,
       }
-      const value = op
-        ? op(currentValue)
-        : currentValue
+      const value = op(currentValue)
       newOp = ops[key](value)
     } else if (key === '=') {
-      newValue = op
-        ? op(currentValue)
-        : currentValue
+      newValue = op(currentValue)
     }
     this.setState({
       currentValue: newValue,
