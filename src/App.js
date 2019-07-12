@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import './App.css'
 import Keyboard from './components/Keyboard'
 import Screen from './components/Screen'
 
