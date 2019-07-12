@@ -42,7 +42,7 @@ class App extends Component {
 
   handleDigit = digit => {
     let { currentValue, overwrite } = this.state
-    if (this.state.overwrite) {
+    if (overwrite) {
       currentValue = digit
       overwrite = digit === '0'
     } else {
@@ -53,9 +53,8 @@ class App extends Component {
 
   handleDot = () => {
     if (!this.state.dot) {
-      const currentValue = this.state.currentValue + '.'
       this.setState({
-        currentValue,
+        currentValue: this.state.currentValue + '.',
         dot: true,
         overwrite: false
       })
