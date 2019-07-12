@@ -18,6 +18,7 @@ class App extends Component {
     currentValue: '0',
     op: x => x,
     dot: false,
+    overwrite: true,
   }
 
   state = this.initialState
@@ -40,19 +41,24 @@ class App extends Component {
   eval = () => this.state.op(parseFloat(this.state.currentValue))
 
   handleDigit = digit => {
-    let { currentValue } = this.state
-    if (currentValue !== '0') {
-      currentValue += digit
-    } else if (digit !== '0') {
+    let { currentValue, overwrite } = this.state
+    if (this.state.overwrite) {
       currentValue = digit
+      overwrite = digit === '0'
+    } else {
+      currentValue += digit
     }
-    this.setState({ currentValue })
+    this.setState({ currentValue, overwrite })
   }
 
   handleDot = () => {
     if (!this.state.dot) {
       const currentValue = this.state.currentValue + '.'
-      this.setState({ currentValue, dot: true })
+      this.setState({
+        currentValue,
+        dot: true,
+        overwrite: false
+      })
     }
   }
 
