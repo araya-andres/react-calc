@@ -19,6 +19,7 @@ class App extends Component {
     currentValue: 0,
     op: x => x,
     decimalPosition: 0,
+    decimals: 0,
   }
 
   state = this.initialState
@@ -44,10 +45,11 @@ class App extends Component {
   }
 
   handleDecimal = n => {
-    let { currentValue, decimalPosition } = this.state
+    let { currentValue, decimalPosition, decimals } = this.state
     currentValue += decimalPosition * n
     decimalPosition *= 0.1
-    this.setState({ currentValue, decimalPosition })
+    decimals++
+    this.setState({ currentValue, decimalPosition, decimals })
   }
 
   handleDot = () => {
@@ -60,6 +62,7 @@ class App extends Component {
     currentValue: this.state.op(this.state.currentValue),
     op: x => x,
     decimalPosition: 0,
+    decimals: 0,
   })
 
   handleClear = () => this.setState(this.initialState)
@@ -87,6 +90,7 @@ class App extends Component {
         currentValue: 0,
         op: ops[key](this.state.op(this.state.currentValue)),
         decimalPosition: 0,
+        decimals: 0,
       })
     }
   }
@@ -106,9 +110,13 @@ class App extends Component {
   }
 
   render () {
+    const { currentValue, decimals } = this.state
+    const value = decimals > 0
+      ? currentValue.toFixed(decimals)
+      : currentValue
     return (
       <div className="App">
-        <Screen value={this.state.currentValue}/>
+        <Screen value={value}/>
         <Keyboard keys={this.keys}/>
       </div>
     )
