@@ -16,10 +16,9 @@ const getId = key => {
 
 class App extends Component {
   initialState = {
-    currentValue: 0,
+    currentValue: '0',
     op: x => x,
-    decimalPosition: 0,
-    decimals: 0,
+    dot: false,
   }
 
   state = this.initialState
@@ -39,46 +38,34 @@ class App extends Component {
     })))
   }
 
-  handleInteger = n => {
-    const currentValue = this.state.currentValue * 10 + n
+  eval = () => this.state.op(parseFloat(this.state.currentValue))
+
+  handleDigit = digit => {
+    let { currentValue } = this.state
+    if (currentValue !== '0') {
+      currentValue += digit
+    } else if (digit !== '0') {
+      currentValue = digit
+    }
     this.setState({ currentValue })
   }
 
-  handleDecimal = n => {
-    let { currentValue, decimalPosition, decimals } = this.state
-    currentValue += decimalPosition * n
-    decimalPosition *= 0.1
-    decimals++
-    this.setState({ currentValue, decimalPosition, decimals })
-  }
-
   handleDot = () => {
-    if (this.state.decimalPosition === 0) {
-      this.setState({ decimalPosition: .1 })
+    if (!this.state.dot) {
+      const currentValue = this.state.currentValue + '.'
+      this.setState({ currentValue, dot: true })
     }
   }
 
   handleEq = () => this.setState({
-    currentValue: this.state.op(this.state.currentValue),
+    currentValue: this.eval().toString(),
     op: x => x,
-    decimalPosition: 0,
-    decimals: 0,
+    dot: false,
   })
 
   handleClear = () => this.setState(this.initialState)
 
-  getNumberHandler = key => {
-    const n = Number.parseInt(key)
-    return () => {
-      if (this.state.decimalPosition === 0) {
-        this.handleInteger(n)
-      } else {
-        this.handleDecimal(n)
-      }
-    }
-  }
-
-  getOperatorHandler = key => {
+  getOperatorHandler = op => {
     const ops = {
       '+': x => y => x + y,
       '-': x => y => x - y,
@@ -87,17 +74,16 @@ class App extends Component {
     }
     return () => {
       this.setState({
-        currentValue: 0,
-        op: ops[key](this.state.op(this.state.currentValue)),
-        decimalPosition: 0,
-        decimals: 0,
+        currentValue: '0',
+        op: ops[op](this.eval()),
+        dot: false,
       })
     }
   }
 
   getHandler = key => {
     if (/\d/.test(key)) {
-      return this.getNumberHandler(key)
+      return this.handleDigit
     } else if (/[+\-x/]/.test(key)) {
       return this.getOperatorHandler(key)
     } else if (key === '=') {
@@ -110,13 +96,9 @@ class App extends Component {
   }
 
   render () {
-    const { currentValue, decimals } = this.state
-    const value = decimals > 0
-      ? currentValue.toFixed(decimals)
-      : currentValue
     return (
       <div className="App">
-        <Screen value={value}/>
+        <Screen value={this.state.currentValue}/>
         <Keyboard keys={this.keys}/>
       </div>
     )
