@@ -58,9 +58,8 @@ class App extends Component {
   }
 
   handleEq = () => this.setState({
+    ...this.initialState,
     currentValue: this.eval().toString(),
-    op: x => x,
-    dot: false,
   })
 
   handleClear = () => this.setState(this.initialState)
@@ -74,9 +73,8 @@ class App extends Component {
     }
     return () => {
       this.setState({
-        currentValue: '0',
+        ...this.initialState,
         op: ops[op](this.eval()),
-        dot: false,
       })
     }
   }
