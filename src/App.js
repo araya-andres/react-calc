@@ -2,7 +2,12 @@ import React, { Component } from 'react'
 import Keyboard from './components/Keyboard'
 import Screen from './components/Screen'
 
-const getId = key => {
+/**
+ * Generate a class id for the given key label
+ * @param {string} key A key label
+ * @return {string} The class id
+ */
+function getId (key) {
   const desc = {
     '+': 'addition',
     '-': 'substraction',
@@ -13,18 +18,20 @@ const getId = key => {
   return `key_${key in desc ? desc[key] : key}`
 }
 
+/** App **/
 class App extends Component {
-  initialState = {
-    currentValue: '0',
-    op: x => x,
-    dot: false,
-    overwrite: true,
-  }
-
-  state = this.initialState
-
   constructor(props) {
     super(props)
+
+    this.initialState = {
+      currentValue: '0',
+      op: x => x,
+      dot: false,
+      overwrite: true,
+    }
+
+    this.state = this.initialState
+
     this.keys = [
       [ 'clear', '/' ],
       [ '7', '8', '9', 'x' ],
@@ -38,8 +45,16 @@ class App extends Component {
     })))
   }
 
+  /**
+   * Evaluate the current operation
+   * @return The result of the current operation
+   */
   eval = () => this.state.op(parseFloat(this.state.currentValue))
 
+  /**
+   * Handle a digit key
+   * @param {string} digit A digit
+   */
   handleDigit = digit => {
     let { currentValue, overwrite } = this.state
     if (overwrite) {
@@ -51,6 +66,7 @@ class App extends Component {
     this.setState({ currentValue, overwrite })
   }
 
+  /** Handle the dot key */
   handleDot = () => {
     if (!this.state.dot) {
       this.setState({
@@ -61,13 +77,20 @@ class App extends Component {
     }
   }
 
+  /** Handle the equal key */
   handleEq = () => this.setState({
     ...this.initialState,
     currentValue: this.eval().toString(),
   })
 
+  /** Handle the clear key */
   handleClear = () => this.setState(this.initialState)
 
+  /**
+   * Return the handler function for the given operator
+   * @param {string} op Arithmetic operator
+   * @return {function} A handler function
+   */
   getOperatorHandler = op => {
     const ops = {
       '+': x => y => x + y,
@@ -83,6 +106,11 @@ class App extends Component {
     }
   }
 
+  /**
+   * Return the handler function for the given key label
+   * @param {string} key The key label
+   * @return {function} A handler function
+   */
   getHandler = key => {
     if (/\d/.test(key)) {
       return this.handleDigit
@@ -97,6 +125,7 @@ class App extends Component {
     }
   }
 
+  /** Render the calculator */
   render () {
     return (
       <div className="App">
